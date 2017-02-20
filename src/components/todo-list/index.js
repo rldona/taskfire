@@ -113,7 +113,7 @@ export default class TodoList extends Component {
         return (
           <View style={styles.todoListEmpty}>
             <View style={styles.row}>
-              <Text style={{fontSize: 20, color: '#000'}}>Lista vacía</Text>
+              <Text style={{fontSize: 20, color: '#000'}}>No hay elementos</Text>
             </View>
           </View>
         )
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: height - 200
+    height: height - 220
   },
   centering: {
     alignItems: 'center',

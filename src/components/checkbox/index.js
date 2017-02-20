@@ -29,10 +29,10 @@ export default class Checkbox extends Component {
 
   renderIconTrash(checked) {
     // update todo states
-    this.todosRef.child(this.props.id).update({
-      completed: this.props.checked,
-      description: this.props.title
-    });
+    // this.todosRef.child(this.props.id).update({
+    //   completed: this.props.checked,
+    //   description: this.props.title
+    // });
 
     if (!checked) {
       return null;
@@ -41,10 +41,11 @@ export default class Checkbox extends Component {
         <TouchableOpacity
           style={styles.trash}
           activeOpacity={1}
-          onPress={() => { todosRef.child(this.props.id).remove(); ToastAndroid.show('Elemento eliminado', ToastAndroid.SHORT) }}>
-
+          onPress={() => {
+            todosRef.child(this.props.id).remove();
+            ToastAndroid.show('Elemento eliminado', ToastAndroid.SHORT)
+          }}>
           <Icon name='delete' color="#E91E63" size={25} />
-
         </TouchableOpacity>
       )
     }
