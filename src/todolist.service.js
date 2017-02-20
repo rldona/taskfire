@@ -4,6 +4,8 @@ let ref = null;
 
 export let todoList = [];
 
+let deleteAll = false;
+
 export const fb = () => {
   const config = {
     apiKey: "AIzaSyBB8Cl3iMw-8w-QCbIUV0_uIqQeL6qKADU",
@@ -33,6 +35,14 @@ export const getTodoList = () => {
 
 export const setTodoList = (todo) => {
   todoList.push(todo);
+}
+
+export const getDeleteAll = (state) => {
+  return deleteAll;
+}
+
+export const setDeleteAll = (state) => {
+  deleteAll = state;
 }
 
 export const getReference = () => {

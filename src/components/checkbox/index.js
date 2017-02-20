@@ -29,10 +29,10 @@ export default class Checkbox extends Component {
 
   renderIconTrash(checked) {
     // update todo states
-    // this.todosRef.child(this.props.id).update({
-    //   completed: this.props.checked,
-    //   description: this.props.title
-    // });
+    this.todosRef.child(this.props.id).update({
+      completed: this.props.checked,
+      description: this.props.title
+    });
 
     if (!checked) {
       return null;
@@ -96,18 +96,20 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 15,
-    paddingVertical: 10
+    paddingVertical: 20,
   },
   rowDual: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#999'
   },
   trash: {
     position: 'absolute',
     top: 0,
     right: 0,
-    padding: 10,
-    // backgroundColor: '#DDD'
+    padding: 19,
+    backgroundColor: '#f5f5f5'
   }
 });

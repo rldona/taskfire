@@ -72,19 +72,36 @@ export default class TodoList extends Component {
   }
 
   borrarTodo(todo) {
-    for (var i = 0, size = FirebaseService.todoList.length; i < size; i++) {
-      if (todo.key === FirebaseService.todoList[i].key) {
-        FirebaseService.todoList.splice(i, 1);
 
-        this.setState({
-          todoList: ds.cloneWithRows(FirebaseService.todoList)
-        });
 
-        return true;
+    if(!FirebaseService.getDeleteAll()) {
+
+      console.log('borrando que es gerundio... ', todo);
+
+      for (var i = 0, size = FirebaseService.todoList.length; i < size; i++) {
+        if (todo.key === FirebaseService.todoList[i].key) {
+          FirebaseService.todoList.splice(i, 1);
+
+          this.setState({
+            todoList: ds.cloneWithRows(FirebaseService.todoList)
+          });
+
+          return true;
+        }
       }
+
+      FirebaseService.setDeleteAll(false);
+
+      return false;
+
+    } else {
+      FirebaseService.todoList = [];
+
+      this.setState({
+        todoList: ds.cloneWithRows(FirebaseService.todoList)
+      });
     }
 
-    return false;
   }
 
   renderTodoList(todo) {
@@ -100,20 +117,20 @@ export default class TodoList extends Component {
     if (this.state.todoList) {
       if (this.state.todoList._cachedRowCount > 0) {
         return (
-          <View style={styles.container}>
+          // <View style={styles.container}>
             <ListView
               dataSource={this.state.todoList}
               renderRow={(rowData) => this.renderTodoList(rowData)}
               enableEmptySections={true}
               showsVerticalScrollIndicator={false}
               horizontal={false} />
-          </View>
+          // </View>
         )
       } else {
         return (
           <View style={styles.todoListEmpty}>
             <View style={styles.row}>
-              <Text style={{fontSize: 20, color: '#000'}}>No hay elementos</Text>
+              <Text style={{fontSize: 18, color: '#000'}}>No hay elementos</Text>
             </View>
           </View>
         )
@@ -136,8 +153,8 @@ export default class TodoList extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
-    elevation: 5,
+    margin: 0,
+    elevation: 0,
     backgroundColor: '#FFF',
   },
   row: {
@@ -149,7 +166,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: height - 220
+    height: height - 170
   },
   centering: {
     alignItems: 'center',

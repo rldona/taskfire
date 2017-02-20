@@ -32,6 +32,7 @@ export default class Header extends Component {
         {
           text: 'Sí',
           onPress: () => {
+            FirebaseService.setDeleteAll(true);
             this.todosRef.remove();
           }
         }

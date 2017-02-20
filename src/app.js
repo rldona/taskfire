@@ -33,10 +33,15 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
+
         <StatusBar hidden={false} backgroundColor="rgba(0,0,0, 0.2)" translucent={true} />
+
         <Header title="Taskfire" version="v2.3.0" />
+
         <Search />
+
         <TodoList />
+
       </View>
     )
   }
@@ -46,6 +51,8 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(139, 195, 74, 0.4)'
+    // backgroundColor: 'rgba(139, 195, 74, 0.4)'
+    backgroundColor: '#FFF'
   },
+
 });
