@@ -7,10 +7,10 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import * as FirebaseService from '../../todolist.service';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class Header extends Component {
-
   constructor(props, context) {
     super(props);
   }
@@ -27,10 +27,11 @@ export default class Header extends Component {
             {this.props.version}
           </Text>
         </View>
+
         <TouchableOpacity
           style={styles.row}
           activeOpacity={1}>
-            <Text style={styles.todosCount}>3</Text>
+            <Text style={styles.todosCount}>{FirebaseService.todoList.length}</Text>
             <Icon name="check-all" size={27} color="#FFF" />
         </TouchableOpacity>
       </View>

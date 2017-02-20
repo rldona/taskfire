@@ -8,6 +8,8 @@ import {
   Dimensions,
 } from 'react-native';
 
+import * as FirebaseService from '../../todolist.service';
+
 const { width, height } = Dimensions.get('window');
 
 export default class Search extends Component {
@@ -15,9 +17,29 @@ export default class Search extends Component {
   constructor(props, context) {
     super(props);
 
+    this.todosRef = FirebaseService.getReference();
+
     this.state = {
       todo: ''
     };
+  }
+
+  _addTodo(todo) {
+    // save to Firebase
+    this.todosRef.push({
+        description: todo,
+        completed: false
+    });
+
+    // save to FirebaseService
+    // FirebaseService.todoList.push({
+    //   description: todo,
+    //   completed: false
+    // });
+
+    this.setState({
+      todo: ''
+    });
   }
 
   render() {
@@ -26,6 +48,7 @@ export default class Search extends Component {
         <TextInput
           style={styles.searchContainer}
           onChangeText={(todo) => this.setState({todo})}
+          onSubmitEditing={(todo) => this._addTodo(this.state.todo)}
           value={this.state.todo}
           placeholder="Ejm: pan, leche, azúcar, agua..."
           autoFocus={false}
@@ -38,9 +61,8 @@ export default class Search extends Component {
           autoCorrect={false}
           returnKeyType="search" />
       </View>
-    );
+    )
   }
-
 }
 
 const styles = StyleSheet.create({

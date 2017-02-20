@@ -9,10 +9,10 @@ import {
   ListView
 } from 'react-native';
 
+import * as FirebaseService from '../../todolist.service';
 import Todo from '../todo';
 
 const { width, height } = Dimensions.get('window');
-
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 export default class TodoList extends Component {
@@ -23,24 +23,50 @@ export default class TodoList extends Component {
     this.state = {
       todoList: null
     };
+
+    this.ref = FirebaseService.getReference();
   }
 
   componentWillMount() {
-    let list = [
-      {text: 'pan'},
-      {text: 'leche'},
-      {text: 'azúcar'}
-    ];
+    this.ref.on('child_added', (data) => {
+      if (data.val() && typeof data.val() !== 'undefined' && data.val() !== '') {
+        FirebaseService.todoList.push({
+          key: data.key,
+          description: data.val().description,
+          completed: data.val().completed
+        });
+      }
 
-    this.setState({
-      todoList: ds.cloneWithRows(list)
+      this.setState({
+        todoList: ds.cloneWithRows(FirebaseService.todoList)
+      });
     });
+
+    this.ref.on('child_removed', (todo) => {
+      this.borrarTodo(todo);
+    });
+  }
+
+  borrarTodo(todo) {
+    for (var i = 0, size = FirebaseService.todoList.length; i < size; i++) {
+      if (todo.key === FirebaseService.todoList[i].key) {
+        FirebaseService.todoList.splice(i, 1);
+
+        this.setState({
+          todoList: ds.cloneWithRows(FirebaseService.todoList)
+        });
+
+        return true;
+      }
+    }
+
+    return false;
   }
 
   renderTodoList(todo) {
     return (
       <View>
-        <Todo title={todo.text} />
+        <Todo todo={todo} />
       </View>
     )
   }
@@ -52,7 +78,9 @@ export default class TodoList extends Component {
           <ListView
             dataSource={this.state.todoList}
             renderRow={(rowData) => this.renderTodoList(rowData)}
-            enableEmptySections={true} />
+            enableEmptySections={true}
+            showsVerticalScrollIndicator={false}
+            horizontal={false} />
         </View>
       );
     }
@@ -65,6 +93,7 @@ export default class TodoList extends Component {
       </View>
     )
   }
+
 }
 
 const styles = StyleSheet.create({

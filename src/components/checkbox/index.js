@@ -10,7 +10,6 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class Checkbox extends Component {
-
   constructor(props) {
     super(props);
   }
@@ -28,11 +27,13 @@ export default class Checkbox extends Component {
       return {
         fontSize: 18,
         color: '#000',
+        marginLeft: 15,
         textDecorationLine: 'line-through'
       }
     } else {
       return {
         fontSize: 18,
+        marginLeft: 15,
         color: '#000'
       }
     }
@@ -40,13 +41,26 @@ export default class Checkbox extends Component {
 
   render() {
     return (
+      <View style={styles.rowDual}>
+
       <TouchableOpacity
         style={styles.row}
         activeOpacity={1}
         onPress={this.props.onChange.bind(this, !this.props.checked)}>
-        <Text style={this.lineThrough()}>{this.props.title}</Text>
         {this.renderIconCheck(this.props.checked)}
+        <Text style={this.lineThrough()}>{this.props.title}</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.row}
+        activeOpacity={1}
+        onPress={this.props.onChange.bind(this, !this.props.checked)}>
+
+        <Icon name='delete-forever' color="#E91E63" size={25} />
+
+      </TouchableOpacity>
+
+      </View>
     )
   }
 
@@ -55,9 +69,14 @@ export default class Checkbox extends Component {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 15,
     paddingVertical: 10
+  },
+  rowDual: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 });

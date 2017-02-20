@@ -7,6 +7,8 @@ import {
   StatusBar
 } from 'react-native';
 
+import * as FirebaseService from './todolist.service';
+
 import Header from './components/header';
 import Search from './components/search';
 import TodoList from './components/todo-list';
@@ -15,6 +17,7 @@ export default class App extends Component {
 
   constructor(props, context) {
     super(props);
+    FirebaseService.fb();
   }
 
   render() {
