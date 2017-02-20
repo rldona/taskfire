@@ -28,13 +28,15 @@ export default class Checkbox extends Component {
         fontSize: 18,
         color: '#000',
         marginLeft: 15,
+        minWidth: 290,
         textDecorationLine: 'line-through'
       }
     } else {
       return {
         fontSize: 18,
         marginLeft: 15,
-        color: '#000'
+        color: '#000',
+        minWidth: 290,
       }
     }
   }
@@ -52,11 +54,11 @@ export default class Checkbox extends Component {
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.row}
+        style={styles.trash}
         activeOpacity={1}
         onPress={this.props.onChange.bind(this, !this.props.checked)}>
 
-        <Icon name='delete-forever' color="#E91E63" size={25} />
+        <Icon name='delete' color="#E91E63" size={25} />
 
       </TouchableOpacity>
 
@@ -78,5 +80,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  trash: {
+    position: 'absolute',
+    top: 7,
+    right: 10
   }
 });

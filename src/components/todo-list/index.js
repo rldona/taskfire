@@ -6,7 +6,8 @@ import {
   View,
   TextInput,
   Dimensions,
-  ListView
+  ListView,
+  ActivityIndicator,
 } from 'react-native';
 
 import * as FirebaseService from '../../todolist.service';
@@ -72,24 +73,38 @@ export default class TodoList extends Component {
   }
 
   render() {
+
+
     if (this.state.todoList) {
-      return (
-        <View style={styles.container}>
-          <ListView
-            dataSource={this.state.todoList}
-            renderRow={(rowData) => this.renderTodoList(rowData)}
-            enableEmptySections={true}
-            showsVerticalScrollIndicator={false}
-            horizontal={false} />
-        </View>
-      );
+      // if (this.state.todoList.length > 0) {
+        return (
+          <View style={styles.container}>
+            <ListView
+              dataSource={this.state.todoList}
+              renderRow={(rowData) => this.renderTodoList(rowData)}
+              enableEmptySections={true}
+              showsVerticalScrollIndicator={false}
+              horizontal={false} />
+          </View>
+        )
+      /*} else {
+        return (
+          <View style={styles.todoListEmpty}>
+            <View style={styles.row}>
+              <Text>Lista vacía</Text>
+            </View>
+          </View>
+        )
+      }*/
     }
 
     return (
       <View style={styles.todoListEmpty}>
-        <View style={styles.row}>
-          <Text>Lista vacía</Text>
-        </View>
+        <ActivityIndicator
+          style={[styles.centering, styles.gray]}
+          color="#000"
+          size={50}
+        />
       </View>
     )
   }
@@ -112,5 +127,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: height - 200
-  }
+  },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+  },
 });

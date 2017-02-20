@@ -25,21 +25,26 @@ export default class Search extends Component {
   }
 
   _addTodo(todo) {
+
+    console.log(todo);
+
     // save to Firebase
-    this.todosRef.push({
-        description: todo,
-        completed: false
-    });
+    if (todo && typeof todo !== 'undefined' && todo !== '') {
+      this.todosRef.push({
+          description: todo,
+          completed: false
+      });
 
-    // save to FirebaseService
-    // FirebaseService.todoList.push({
-    //   description: todo,
-    //   completed: false
-    // });
+      // save to FirebaseService
+      // FirebaseService.todoList.push({
+      //   description: todo,
+      //   completed: false
+      // });
 
-    this.setState({
-      todo: ''
-    });
+      this.setState({
+        todo: ''
+      });
+    }
   }
 
   render() {
