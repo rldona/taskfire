@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
   TouchableOpacity
 } from 'react-native';
 
@@ -11,8 +12,38 @@ import * as FirebaseService from '../../todolist.service';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class Header extends Component {
+
   constructor(props, context) {
     super(props);
+
+    this.todosRef = FirebaseService.getReference();
+
+    console.log(this.todosRef);
+
+  }
+
+  removeAllTodos() {
+    Alert.alert(
+      'Eliminar lista de tareas',
+      '¿Realmente quieres eliminar toda la lista de tareas?',
+      [
+        {
+          text: 'No',
+          onPress: () => {
+            console.log('Cancel Pressed');
+          },
+        },
+        {
+          text: 'Sí',
+          onPress: () => {
+            this.todosRef.remove();
+          }
+        }
+      ],
+      {
+        cancelable: true
+      }
+    );
   }
 
   render() {
@@ -29,9 +60,10 @@ export default class Header extends Component {
         </View>
 
         <TouchableOpacity
+          onPress={this.removeAllTodos.bind(this)}
           style={styles.row}
           activeOpacity={1}>
-            <Text style={styles.todosCount}>{FirebaseService.todoList.length}</Text>
+            {/*<Text style={styles.todosCount}>{FirebaseService.todoList.length}</Text>*/}
             <Icon name="check-all" size={27} color="#FFF" />
         </TouchableOpacity>
       </View>

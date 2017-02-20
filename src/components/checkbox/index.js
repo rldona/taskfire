@@ -4,14 +4,19 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  ToastAndroid
 } from 'react-native';
 
+import * as FirebaseService from '../../todolist.service';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class Checkbox extends Component {
+
   constructor(props) {
     super(props);
+
+    this.todosRef = FirebaseService.getReference();
   }
 
   renderIconCheck(checked) {
@@ -19,6 +24,23 @@ export default class Checkbox extends Component {
       return <Icon name='checkbox-blank-outline' color="#000" size={23} />
     } else {
       return <Icon name='checkbox-marked' color="#000" size={23} />
+    }
+  }
+
+  renderIconTrash(checked) {
+    if (!checked) {
+      return null
+    } else {
+      return (
+        <TouchableOpacity
+          style={styles.trash}
+          activeOpacity={1}
+          onPress={() => { todosRef.child(this.props.id).remove(); ToastAndroid.show('Elemento eliminado', ToastAndroid.SHORT) }}>
+
+          <Icon name='delete' color="#E91E63" size={25} />
+
+        </TouchableOpacity>
+      )
     }
   }
 
@@ -45,22 +67,15 @@ export default class Checkbox extends Component {
     return (
       <View style={styles.rowDual}>
 
-      <TouchableOpacity
-        style={styles.row}
-        activeOpacity={1}
-        onPress={this.props.onChange.bind(this, !this.props.checked)}>
-        {this.renderIconCheck(this.props.checked)}
-        <Text style={this.lineThrough()}>{this.props.title}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.row}
+          activeOpacity={1}
+          onPress={this.props.onChange.bind(this, !this.props.checked)}>
+          {this.renderIconCheck(this.props.checked)}
+          <Text style={this.lineThrough()}>{this.props.title}</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.trash}
-        activeOpacity={1}
-        onPress={this.props.onChange.bind(this, !this.props.checked)}>
-
-        <Icon name='delete' color="#E91E63" size={25} />
-
-      </TouchableOpacity>
+        {this.renderIconTrash(this.props.checked)}
 
       </View>
     )
@@ -83,7 +98,9 @@ const styles = StyleSheet.create({
   },
   trash: {
     position: 'absolute',
-    top: 7,
-    right: 10
+    top: 0,
+    right: 0,
+    padding: 10,
+    // backgroundColor: '#DDD'
   }
 });

@@ -24,7 +24,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <StatusBar hidden={false} backgroundColor="rgba(0,0,0, 0.2)" translucent={true} />
-        <Header title="Taskfire" version="v1.0.0" />
+        <Header title="Taskfire" version="v2.3.0" />
         <Search />
         <TodoList />
       </View>

@@ -21,6 +21,7 @@ export default class Todo extends Component {
   render() {
     return (
       <Checkbox
+        id={this.props.todo.key}
         title={this.props.todo.description}
         checked={this.state.allowExitApp}
         onChange={(checked) => this.setState({allowExitApp: checked})} />

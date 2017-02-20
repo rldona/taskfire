@@ -76,7 +76,10 @@ export default class TodoList extends Component {
 
 
     if (this.state.todoList) {
-      // if (this.state.todoList.length > 0) {
+
+      console.log(this.state.todoList._cachedRowCount);
+
+      if (this.state.todoList._cachedRowCount > 0) {
         return (
           <View style={styles.container}>
             <ListView
@@ -87,15 +90,15 @@ export default class TodoList extends Component {
               horizontal={false} />
           </View>
         )
-      /*} else {
+      } else {
         return (
           <View style={styles.todoListEmpty}>
             <View style={styles.row}>
-              <Text>Lista vacía</Text>
+              <Text style={{fontSize: 20, color: '#000'}}>Lista vacía</Text>
             </View>
           </View>
         )
-      }*/
+      }
     }
 
     return (

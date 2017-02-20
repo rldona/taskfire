@@ -29,94 +29,6 @@ export const fb = () => {
 }
 
 //
-// PRIVATE
-//
-
-listenersFirebase = () => {
-
-  // function addedEvent(data) {
-  //     // self.add(data.val().description);
-  // }
-
-  // function removedEvent(event) {
-
-  //     console.log(event);
-
-  //     // for (var i = 0, size = this.todos.length; i < size; i++) {
-  //     //   if (typeof event.detail.key !== 'undefined' && typeof this.todos[i] !== 'undefined') {
-  //     //     if (event.detail.key === this.todos[i].key) {
-  //     //       this.splice('todos', i, 1);
-  //     //     }
-  //     //   }
-  //     // }
-
-  //     // toast message
-  //     // this.$.toast.open();
-  // }
-
-  // function removeTodo(data) {
-
-  //     console.log('removeTodo: ', data);
-
-  //     // var todoRemoved = {};
-
-  //     // todoRemoved.key         = data.key;
-  //     // todoRemoved.description = data.val().description;
-
-  //     // self.borrarTodo(todoRemoved);
-  // }
-
-  // firebase listeners
-  this.todosRef.on('child_added', (data) => {
-
-    // console.log('child_added: ', data);
-
-    // PASAR POR LOS EVENTOS PARA AÑADIR, BORRAR Y LISTAR LOS TODOS !!!
-
-    // TODO: hacer push a un array de todos que conecte con la vista todo-list.js y pinte el listado
-    // TODO: hacer lo mismo cuando se borra un todo
-
-    // console.log('added: ', data.val());
-    // console.log('todos: ', self.todos);
-
-    // var todo = data.val();
-    // todo.key = data.key;
-
-    // if (self.todos) {
-    //     // self.add(todo);
-    //     self.todos.push({ key: todo.key, value: todo.description, completed: todo.completed });
-    //     self.list();
-    // }
-
-  });
-
-  // this.todosRef.on('child_removed', (todo) => {
-  //   this.borrarTodo(todo);
-  // });
-
-}
-
-
-// borrarTodo = (todo) => {
-
-//   console.log('delete: ', todo.key);
-//   console.log('delete: ', todo.val);
-
-//   console.log('todos: ', todoList);
-
-//   for (var i = 0, size = this.todoList.length; i < size; i++) {
-//     if (todo.key === this.todoList[i].key) {
-//       this.todoList.splice(i, 1);
-//       // this.push('allRemoved', todo);
-//       return true;
-//     }
-//   }
-
-//   // return false;
-
-// }
-
-//
 // PUBLIC
 //
 
@@ -138,24 +50,6 @@ export const add = (todo) => {
     completed: false
   });
 }
-
-// export const list = () => {
-//   this.todosRef.once('value', (snap) => {
-
-//     this.todos = [];
-
-//     for(var key in snap.val()) {
-//       var obj = {
-//         id: key,
-//         value: snap.val()[key].description,
-//         completed: snap.val()[key].completed
-//       };
-
-//       this.todos.push(obj);
-//     }
-
-//   });
-// }
 
 // export const login = (email, password) => {
 //   firebase.auth().signInWithEmailAndPassword(email,password)
