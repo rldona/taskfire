@@ -28,8 +28,14 @@ export default class Checkbox extends Component {
   }
 
   renderIconTrash(checked) {
+    // update todo states
+    this.todosRef.child(this.props.id).update({
+      completed: this.props.checked,
+      description: this.props.title
+    });
+
     if (!checked) {
-      return null
+      return null;
     } else {
       return (
         <TouchableOpacity

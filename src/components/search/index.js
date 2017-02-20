@@ -24,22 +24,13 @@ export default class Search extends Component {
     };
   }
 
-  _addTodo(todo) {
-
-    console.log(todo);
-
-    // save to Firebase
+  addTodo(todo) {
     if (todo && typeof todo !== 'undefined' && todo !== '') {
+      // add new todo
       this.todosRef.push({
           description: todo,
           completed: false
       });
-
-      // save to FirebaseService
-      // FirebaseService.todoList.push({
-      //   description: todo,
-      //   completed: false
-      // });
 
       this.setState({
         todo: ''
@@ -53,7 +44,7 @@ export default class Search extends Component {
         <TextInput
           style={styles.searchContainer}
           onChangeText={(todo) => this.setState({todo})}
-          onSubmitEditing={(todo) => this._addTodo(this.state.todo)}
+          onSubmitEditing={(todo) => this.addTodo(this.state.todo)}
           value={this.state.todo}
           placeholder="Ejm: pan, leche, azúcar, agua..."
           autoFocus={false}

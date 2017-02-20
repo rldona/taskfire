@@ -29,6 +29,7 @@ export default class TodoList extends Component {
   }
 
   componentWillMount() {
+
     this.ref.on('child_added', (data) => {
       if (data.val() && typeof data.val() !== 'undefined' && data.val() !== '') {
         FirebaseService.todoList.push({
@@ -42,6 +43,28 @@ export default class TodoList extends Component {
         todoList: ds.cloneWithRows(FirebaseService.todoList)
       });
     });
+
+    // this.ref.on('child_changed', (data) => {
+    //   // console.log(data.key);
+    //   // console.log(data.val().description);
+    //   // console.log(data.val().completed);
+
+    //   // console.log(FirebaseService.todoList);
+
+    //   for (var i = 0, size = FirebaseService.todoList.length; i < size; i++) {
+    //     if (data.key === FirebaseService.todoList[i].key) {
+    //       FirebaseService.todoList[i].description = data.val().description;
+    //       FirebaseService.todoList[i].completed = data.val().completed;
+
+    //       // this.setState({
+    //       //   todoList: ds.cloneWithRows(FirebaseService.todoList)
+    //       // });
+
+    //       return true;
+    //     }
+    //   }
+
+    // });
 
     this.ref.on('child_removed', (todo) => {
       this.borrarTodo(todo);
@@ -74,11 +97,7 @@ export default class TodoList extends Component {
 
   render() {
 
-
     if (this.state.todoList) {
-
-      console.log(this.state.todoList._cachedRowCount);
-
       if (this.state.todoList._cachedRowCount > 0) {
         return (
           <View style={styles.container}>
@@ -99,6 +118,7 @@ export default class TodoList extends Component {
           </View>
         )
       }
+
     }
 
     return (

@@ -5,7 +5,6 @@ let ref = null;
 export let todoList = [];
 
 export const fb = () => {
-
   const config = {
     apiKey: "AIzaSyBB8Cl3iMw-8w-QCbIUV0_uIqQeL6qKADU",
     authDomain: "tasksfire-ionic2.firebaseapp.com",
@@ -18,14 +17,10 @@ export const fb = () => {
 
   // init database firebase
   this.database = firebase.database();
-
   // database ref
   this.todosRef = this.database.ref('todos/');
-
+  // prevent listeners
   this.todosRef.off();
-
-  this.listenersFirebase();
-
 }
 
 //

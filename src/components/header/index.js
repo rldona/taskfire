@@ -15,11 +15,7 @@ export default class Header extends Component {
 
   constructor(props, context) {
     super(props);
-
     this.todosRef = FirebaseService.getReference();
-
-    console.log(this.todosRef);
-
   }
 
   removeAllTodos() {
