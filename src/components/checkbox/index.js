@@ -5,7 +5,8 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  ToastAndroid
+  ToastAndroid,
+  Vibration
 } from 'react-native';
 
 import * as FirebaseService from '../../todolist.service';
@@ -28,6 +29,10 @@ export default class Checkbox extends Component {
   }
 
   renderIconTrash(checked) {
+    // let pattern = [0, 20];
+
+    // Vibration.vibrate(pattern);
+
     // update todo states
     this.todosRef.child(this.props.id).update({
       completed: this.props.checked,

@@ -29,7 +29,6 @@ export default class TodoList extends Component {
   }
 
   componentWillMount() {
-
     this.ref.on('child_added', (data) => {
       if (data.val() && typeof data.val() !== 'undefined' && data.val() !== '') {
         FirebaseService.todoList.push({
@@ -72,12 +71,7 @@ export default class TodoList extends Component {
   }
 
   borrarTodo(todo) {
-
-
     if(!FirebaseService.getDeleteAll()) {
-
-      console.log('borrando que es gerundio... ', todo);
-
       for (var i = 0, size = FirebaseService.todoList.length; i < size; i++) {
         if (todo.key === FirebaseService.todoList[i].key) {
           FirebaseService.todoList.splice(i, 1);
@@ -101,7 +95,6 @@ export default class TodoList extends Component {
         todoList: ds.cloneWithRows(FirebaseService.todoList)
       });
     }
-
   }
 
   renderTodoList(todo) {
@@ -113,18 +106,15 @@ export default class TodoList extends Component {
   }
 
   render() {
-
     if (this.state.todoList) {
       if (this.state.todoList._cachedRowCount > 0) {
         return (
-          // <View style={styles.container}>
-            <ListView
-              dataSource={this.state.todoList}
-              renderRow={(rowData) => this.renderTodoList(rowData)}
-              enableEmptySections={true}
-              showsVerticalScrollIndicator={false}
-              horizontal={false} />
-          // </View>
+          <ListView
+            dataSource={this.state.todoList}
+            renderRow={(rowData) => this.renderTodoList(rowData)}
+            enableEmptySections={true}
+            showsVerticalScrollIndicator={false}
+            horizontal={false} />
         )
       } else {
         return (
@@ -135,7 +125,6 @@ export default class TodoList extends Component {
           </View>
         )
       }
-
     }
 
     return (
@@ -143,8 +132,7 @@ export default class TodoList extends Component {
         <ActivityIndicator
           style={[styles.centering, styles.gray]}
           color="#000"
-          size={50}
-        />
+          size={50} />
       </View>
     )
   }
