@@ -25,8 +25,8 @@ export default class App extends Component {
   componentDidMount () {
     SplashScreen.close({
       animationType: SplashScreen.animationType.scale,
-      duration: 150,
-      delay: 50,
+      duration: 250,
+      delay: 250,
     });
   }
 
@@ -36,7 +36,7 @@ export default class App extends Component {
 
         <StatusBar hidden={false} backgroundColor="rgba(0,0,0, 0.2)" translucent={true} />
 
-        <Header title="Taskfire" version="v2.3.0" />
+        <Header title="Taskfire" version="v1.0.0" />
 
         <Search />
 

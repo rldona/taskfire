@@ -104,10 +104,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("./taskfire-key.keystore")
-            storePassword "rld198200"
-            keyAlias "taskfire-key"
-            keyPassword "rld198200"
+            storeFile file(TASKFIRE_RELEASE_STORE_FILE)
+            storePassword TASKFIRE_RELEASE_STORE_PASSWORD
+            keyAlias TASKFIRE_RELEASE_KEY_ALIAS
+            keyPassword TASKFIRE_RELEASE_KEY_PASSWORD
         }
     }
     splits {

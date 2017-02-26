@@ -51,9 +51,9 @@ export default class Header extends Component {
           <Text style={styles.title}>
             {this.props.title}
           </Text>
-          <Text style={styles.version}>
+          {/*<Text style={styles.version}>
             {this.props.version}
-          </Text>
+          </Text>*/}
         </View>
 
         <TouchableOpacity
