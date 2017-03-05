@@ -19,7 +19,8 @@ export default class App extends Component {
 
   constructor(props, context) {
     super(props);
-    FirebaseService.fb();
+
+    FirebaseService.init();
   }
 
   componentDidMount () {
