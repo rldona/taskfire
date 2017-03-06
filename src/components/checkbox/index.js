@@ -9,18 +9,24 @@ import {
   Vibration
 } from 'react-native';
 
-import * as FirebaseService from '../../todolist.service';
+import * as firebase from 'firebase';
+import * as todoListService from '../../todolist.service';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class Checkbox extends Component {
 
   constructor(props) {
     super(props);
-
-    this.todosRef = FirebaseService.getReference();
   }
 
   renderIconCheck(checked) {
+
+    firebase.database().ref('todos').child(this.props.id).update({
+      completed: this.props.checked,
+      description: this.props.title
+    });
+
     if (!checked) {
       return <Icon name='checkbox-blank-outline' color="#000" size={23} />
     } else {
@@ -29,16 +35,6 @@ export default class Checkbox extends Component {
   }
 
   renderIconTrash(checked) {
-    // let pattern = [0, 20];
-
-    // Vibration.vibrate(pattern);
-
-    // update todo states
-    this.todosRef.child(this.props.id).update({
-      completed: this.props.checked,
-      description: this.props.title
-    });
-
     if (!checked) {
       return null;
     } else {
@@ -47,7 +43,7 @@ export default class Checkbox extends Component {
           style={styles.trash}
           activeOpacity={1}
           onPress={() => {
-            todosRef.child(this.props.id).remove();
+            firebase.database().ref('todos').child(this.props.id).remove();
             ToastAndroid.show('Elemento eliminado', ToastAndroid.SHORT)
           }}>
           <Icon name='delete' color="#E91E63" size={25} />
@@ -78,7 +74,6 @@ export default class Checkbox extends Component {
   render() {
     return (
       <View style={styles.rowDual}>
-
         <TouchableOpacity
           style={styles.row}
           activeOpacity={1}
@@ -86,9 +81,7 @@ export default class Checkbox extends Component {
           {this.renderIconCheck(this.props.checked)}
           <Text style={this.lineThrough()}>{this.props.title}</Text>
         </TouchableOpacity>
-
-        {this.renderIconTrash(this.props.checked)}
-
+        {/*{this.renderIconTrash(this.props.checked)}*/}
       </View>
     )
   }

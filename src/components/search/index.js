@@ -4,11 +4,13 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
   TextInput,
   Dimensions,
 } from 'react-native';
 
-import * as FirebaseService from '../../todolist.service';
+import * as firebase from 'firebase';
+import * as todoListService from '../../todolist.service';
 
 const { width, height } = Dimensions.get('window');
 
@@ -17,24 +19,39 @@ export default class Search extends Component {
   constructor(props, context) {
     super(props);
 
-    this.todosRef = FirebaseService.getReference();
-
     this.state = {
       todo: ''
     };
   }
 
-  addTodo(todo) {
-    if (todo && typeof todo !== 'undefined' && todo !== '') {
-      // add new todo
-      this.todosRef.push({
-          description: todo,
-          completed: false
-      });
+  addTodo() {
+    if (this.state.todo && typeof this.state.todo !== 'undefined' && this.state.todo !== '') {
+      if (!todoListService.findTodo(this.state.todo)) {
+        var newPostKey = firebase.database().ref().child('todos').push().key;
 
-      this.setState({
-        todo: ''
-      });
+        firebase.database().ref('/todos/' + newPostKey).set({
+          id: newPostKey,
+          description: this.state.todo,
+          completed: false
+        });
+
+        this.setState({
+          todo: ''
+        });
+      } else {
+        Alert.alert(
+          'Elemento repetido',
+          'El elemento que quieres añadir ya está en la lista',
+          [
+            {
+              text: 'OK'
+            }
+          ],
+          {
+            cancelable: true
+          }
+        );
+      }
     }
   }
 
@@ -44,11 +61,11 @@ export default class Search extends Component {
         <TextInput
           style={styles.searchContainer}
           onChangeText={(todo) => this.setState({todo})}
-          onSubmitEditing={(todo) => this.addTodo(this.state.todo)}
+          onSubmitEditing={() => this.addTodo()}
           value={this.state.todo}
-          placeholder="Ejm: pan, leche, azúcar, agua..."
+          placeholder="Añade elementos a la lista"
           autoFocus={false}
-          underlineColorAndroid='#AAA'
+          underlineColorAndroid='#666'
           selectionColor='#000'
           clearTextOnFocus={false}
           placeholderTextColor="#AAA"

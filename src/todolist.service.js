@@ -1,12 +1,8 @@
 import * as firebase from 'firebase';
 
-let ref = null;
+// Firebase
 
-export let todoList = [];
-
-let deleteAll = false;
-
-export const fb = () => {
+export const init = () => {
   const config = {
     apiKey: "AIzaSyBB8Cl3iMw-8w-QCbIUV0_uIqQeL6qKADU",
     authDomain: "tasksfire-ionic2.firebaseapp.com",
@@ -16,45 +12,81 @@ export const fb = () => {
   };
 
   firebase.initializeApp(config);
-
-  // init database firebase
-  this.database = firebase.database();
-  // database ref
-  this.todosRef = this.database.ref('todos/');
-  // prevent listeners
-  this.todosRef.off();
 }
 
-//
-// PUBLIC
-//
+// Taskfire
 
-export const getTodoList = () => {
-  return todoList;
-}
+export let todoList = [];
 
-export const setTodoList = (todo) => {
+let removeAll = false;
+
+export const setTodo = (todo) => {
   todoList.push(todo);
 }
 
-export const getDeleteAll = (state) => {
-  return deleteAll;
+export const setTodoArray = (arr) => {
+  todoList = arr;
 }
 
-export const setDeleteAll = (state) => {
-  deleteAll = state;
+export const getTodos = () => {
+  return todoList;
 }
 
-export const getReference = () => {
-  return this.todosRef;
+export const changeProperty = (todo, prop) => {
+  for (let i = 0; i < todoList.length; i++) {
+    if (todo.id === todoList[i].id) {
+      todoList[i][prop] = todo.completed;
+    }
+  }
 }
 
-export const add = (todo) => {
-  this.todosRef.push({
-    description: todo,
-    completed: false
-  });
+export const removeTodo = (id) => {
+  for (let i = 0; i < todoList.length; i++) {
+    if (id === todoList[i].id) {
+      todoList.splice(i, 1);
+    }
+  }
 }
+
+export const removeAllTodos = (id) => {
+  todoList = [];
+}
+
+export const getRemoveAll = () => {
+  return removeAll;
+}
+
+export const setRemoveAll = (opt) => {
+  removeAll = opt;
+}
+
+export const getTodoId = (description) => {
+  for (let i = 0; i < todoList.length; i++) {
+    if (todoList[i].description === description) {
+      return i;
+    }
+  }
+}
+
+export const updateProperty = (description, prop, value) => {
+  for (let i = 0; i < todoList.length; i++) {
+    if (todoList[i].description === description) {
+      todoList[i][prop] = value;
+      return true;
+    }
+  }
+  return false;
+}
+
+export const findTodo = (todo) => {
+  for (let i = 0; i < todoList.length; i++) {
+    if (todo === todoList[i].description) {
+      return true
+    }
+  }
+  return false;
+}
+// OAuth
 
 // export const login = (email, password) => {
 //   firebase.auth().signInWithEmailAndPassword(email,password)

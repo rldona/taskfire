@@ -10,11 +10,15 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import * as FirebaseService from '../../todolist.service';
+import * as firebase from 'firebase';
+import * as todoListService from '../../todolist.service';
+
 import Todo from '../todo';
 
 const { width, height } = Dimensions.get('window');
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+let todos = [];
 
 export default class TodoList extends Component {
 
@@ -22,79 +26,71 @@ export default class TodoList extends Component {
     super(props);
 
     this.state = {
-      todoList: null
+      todos: null,
+      list: null
     };
-
-    this.ref = FirebaseService.getReference();
   }
 
   componentWillMount() {
-    this.ref.on('child_added', (data) => {
-      if (data.val() && typeof data.val() !== 'undefined' && data.val() !== '') {
-        FirebaseService.todoList.push({
-          key: data.key,
-          description: data.val().description,
-          completed: data.val().completed
+
+    firebase.database().ref('/todos').on('value', (snapshot) => {
+
+      console.log('value');
+
+      if(!snapshot.val()) {
+        this.setState({
+          list: []
         });
       }
-
-      this.setState({
-        todoList: ds.cloneWithRows(FirebaseService.todoList)
-      });
     });
 
-    // this.ref.on('child_changed', (data) => {
-    //   // console.log(data.key);
-    //   // console.log(data.val().description);
-    //   // console.log(data.val().completed);
+    firebase.database().ref('/todos').on('child_added', (snapshot) => {
 
-    //   // console.log(FirebaseService.todoList);
+      console.log('child_added');
 
-    //   for (var i = 0, size = FirebaseService.todoList.length; i < size; i++) {
-    //     if (data.key === FirebaseService.todoList[i].key) {
-    //       FirebaseService.todoList[i].description = data.val().description;
-    //       FirebaseService.todoList[i].completed = data.val().completed;
-
-    //       // this.setState({
-    //       //   todoList: ds.cloneWithRows(FirebaseService.todoList)
-    //       // });
-
-    //       return true;
-    //     }
-    //   }
-
-    // });
-
-    this.ref.on('child_removed', (todo) => {
-      this.borrarTodo(todo);
-    });
-  }
-
-  borrarTodo(todo) {
-    if(!FirebaseService.getDeleteAll()) {
-      for (var i = 0, size = FirebaseService.todoList.length; i < size; i++) {
-        if (todo.key === FirebaseService.todoList[i].key) {
-          FirebaseService.todoList.splice(i, 1);
-
-          this.setState({
-            todoList: ds.cloneWithRows(FirebaseService.todoList)
-          });
-
-          return true;
-        }
+      if (snapshot.val() && typeof snapshot.val() !== 'undefined') {
+        todoListService.setTodo(snapshot.val());
+        this.setState({
+          todos: ds.cloneWithRows(todoListService.getTodos()),
+          list: snapshot.val()
+        });
+      } else {
+        this.setState({
+          todos: ds.cloneWithRows([]),
+          list: []
+        });
       }
+    });
 
-      FirebaseService.setDeleteAll(false);
+    firebase.database().ref('/todos').on('child_changed', (snapshot) => {
 
-      return false;
+      console.log('child_changed');
+      console.log(snapshot.val());
 
-    } else {
-      FirebaseService.todoList = [];
+      // buscar todo y cambiar valor
+      todoListService.changeProperty(snapshot.val(), 'completed');
+      // pintar lista
+      // this.setState({
+      //   todos: ds.cloneWithRows(todoListService.getTodos())
+      // });
 
-      this.setState({
-        todoList: ds.cloneWithRows(FirebaseService.todoList)
-      });
-    }
+    });
+
+    firebase.database().ref('/todos').on('child_removed', (snapshot) => {
+
+      console.log('child_removed');
+
+      if (todoListService.getRemoveAll()) {
+        todoListService.removeAllTodos();
+
+        this.setState({
+          todos: null,
+          list: []
+        });
+
+        todoListService.setRemoveAll(false);
+      }
+    });
   }
 
   renderTodoList(todo) {
@@ -106,37 +102,37 @@ export default class TodoList extends Component {
   }
 
   render() {
-    if (this.state.todoList) {
-      if (this.state.todoList._cachedRowCount > 0) {
-        return (
-          <ListView
-            dataSource={this.state.todoList}
-            renderRow={(rowData) => this.renderTodoList(rowData)}
-            enableEmptySections={true}
-            showsVerticalScrollIndicator={false}
-            horizontal={false} />
-        )
+    if (this.state.list) {
+      if (this.state.todos) {
+        if (this.state.todos._cachedRowCount > 0) {
+          return (
+            <ListView
+              dataSource={this.state.todos}
+              renderRow={(rowData) => this.renderTodoList(rowData)}
+              enableEmptySections={true}
+              showsVerticalScrollIndicator={false}
+              horizontal={false} />
+          )
+        }
       } else {
         return (
-          <View style={styles.todoListEmpty}>
-            <View style={styles.row}>
-              <Text style={{fontSize: 18, color: '#000'}}>No hay elementos</Text>
-            </View>
+          <View styles={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'red'}}>
+            <Text style={{marginTop: 20, alignSelf: 'center', fontSize: 18}}>No hay elementos</Text>
           </View>
         )
       }
     }
 
     return (
-      <View style={styles.todoListEmpty}>
+      <View style={{marginTop: 20}}>
         <ActivityIndicator
-          style={[styles.centering, styles.gray]}
-          color="#000"
-          size={50} />
+          color='#000'
+          animating={true}
+          size={50}
+        />
       </View>
     )
   }
-
 }
 
 const styles = StyleSheet.create({

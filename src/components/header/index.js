@@ -8,14 +8,14 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import * as FirebaseService from '../../todolist.service';
+import * as firebase from 'firebase';
+import * as todoListService from '../../todolist.service';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class Header extends Component {
 
   constructor(props, context) {
     super(props);
-    this.todosRef = FirebaseService.getReference();
   }
 
   removeAllTodos() {
@@ -32,8 +32,8 @@ export default class Header extends Component {
         {
           text: 'Sí',
           onPress: () => {
-            FirebaseService.setDeleteAll(true);
-            this.todosRef.remove();
+            todoListService.setRemoveAll(true);
+            firebase.database().ref('todos').remove();
           }
         }
       ],
@@ -47,21 +47,18 @@ export default class Header extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-          <Icon name="menu" size={27} color="#FFF" />
+          {/*<Icon name="menu" size={27} color="#FFF" />*/}
           <Text style={styles.title}>
             {this.props.title}
           </Text>
-          {/*<Text style={styles.version}>
-            {this.props.version}
-          </Text>*/}
         </View>
 
         <TouchableOpacity
           onPress={this.removeAllTodos.bind(this)}
           style={styles.row}
           activeOpacity={1}>
-            {/*<Text style={styles.todosCount}>{FirebaseService.todoList.length}</Text>*/}
-            <Icon name="check-all" size={27} color="#FFF" />
+          <Icon name="check-all" size={25} color="#FFF" />
+          <Text style={{color: '#FFF', marginLeft: 5, fontSize: 14}}>BORRAR LISTA</Text>
         </TouchableOpacity>
       </View>
     )
@@ -87,7 +84,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 20,
     fontWeight: '600',
-    marginLeft: 15
+    marginLeft: 5 //15
   },
   version: {
     color: '#FFF',

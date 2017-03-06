@@ -6,31 +6,36 @@ import {
   View
 } from 'react-native';
 
+import * as firebase from 'firebase';
+import * as todoListService from '../../todolist.service';
+
 import Checkbox from '../checkbox';
 
 export default class Todo extends Component {
 
   constructor(props, context) {
     super(props);
+  }
 
+  componentWillMount() {
     this.state = {
-      allowExitApp: this.props.todo.completed,
+      completed: this.props.todo.completed,
     }
   }
 
-  settState(checked) {
+  changeTodoState(checked) {
     this.setState({
-      allowExitApp: checked
+      completed: checked
     });
   }
 
   render() {
     return (
       <Checkbox
-        id={this.props.todo.key}
+        id={this.props.todo.id}
         title={this.props.todo.description}
-        checked={this.state.allowExitApp}
-        onChange={this.settState.bind(this)} />
+        checked={this.state.completed}
+        onChange={this.changeTodoState.bind(this)} />
     )
   }
 
