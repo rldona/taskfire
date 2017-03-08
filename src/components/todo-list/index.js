@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import {connect} from 'react-redux';
+
 import {
   StyleSheet,
   Text,
@@ -16,43 +18,29 @@ import * as todoListService from '../../todolist.service';
 import Todo from '../todo';
 
 const { width, height } = Dimensions.get('window');
+
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-let todos = [];
-
-export default class TodoList extends Component {
+class TodoList extends Component {
 
   constructor(props, context) {
     super(props);
 
+    this.items = [];
+
     this.state = {
-      todos: null,
-      list: null
+      todos: null
     };
   }
 
-  componentWillMount() {
-
-    firebase.database().ref('/todos').on('value', (snapshot) => {
-
-      console.log('value');
-
-      if(!snapshot.val()) {
-        this.setState({
-          list: []
-        });
-      }
-    });
-
-    firebase.database().ref('/todos').on('child_added', (snapshot) => {
-
-      console.log('child_added');
+  componentDidMount() {
+    firebase.database().ref('/todosDEV/').on('child_added', (snapshot) => {
+      this.items.push(snapshot.val());
 
       if (snapshot.val() && typeof snapshot.val() !== 'undefined') {
         todoListService.setTodo(snapshot.val());
         this.setState({
-          todos: ds.cloneWithRows(todoListService.getTodos()),
-          list: snapshot.val()
+          todos: ds.cloneWithRows(this.items),
         });
       } else {
         this.setState({
@@ -62,34 +50,28 @@ export default class TodoList extends Component {
       }
     });
 
-    firebase.database().ref('/todos').on('child_changed', (snapshot) => {
+    firebase.database().ref('/todosDEV/').on('child_changed', (snapshot) => {
+      for (let i = 0; i < this.items.length; i++) {
+        if (snapshot.val().id === this.items[i].id) {
+          this.items[i]['completed'] = snapshot.val().completed;
+        }
+      }
 
-      console.log('child_changed');
-      console.log(snapshot.val());
-
-      // buscar todo y cambiar valor
-      todoListService.changeProperty(snapshot.val(), 'completed');
-      // pintar lista
-      // this.setState({
-      //   todos: ds.cloneWithRows(todoListService.getTodos())
-      // });
-
+      this.setState({
+        todos: ds.cloneWithRows(this.items)
+      });
     });
 
-    firebase.database().ref('/todos').on('child_removed', (snapshot) => {
+    firebase.database().ref('/todosDEV/').on('child_removed', (snapshot) => {
+      this.items = [];
+      todoListService.removeAllTodos();
+      firebase.database().ref('/todosDEV/').set(null);
 
-      console.log('child_removed');
+      this.setState({
+        todos: null,
+        list: []
+      });
 
-      if (todoListService.getRemoveAll()) {
-        todoListService.removeAllTodos();
-
-        this.setState({
-          todos: null,
-          list: []
-        });
-
-        todoListService.setRemoveAll(false);
-      }
     });
   }
 
@@ -101,37 +83,37 @@ export default class TodoList extends Component {
     )
   }
 
-  render() {
-    if (this.state.list) {
-      if (this.state.todos) {
-        if (this.state.todos._cachedRowCount > 0) {
-          return (
-            <ListView
-              dataSource={this.state.todos}
-              renderRow={(rowData) => this.renderTodoList(rowData)}
-              enableEmptySections={true}
-              showsVerticalScrollIndicator={false}
-              horizontal={false} />
-          )
-        }
-      } else {
-        return (
-          <View styles={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'red'}}>
-            <Text style={{marginTop: 20, alignSelf: 'center', fontSize: 18}}>No hay elementos</Text>
-          </View>
-        )
-      }
-    }
+  renderTodos() {
+    const {todos} = this.props;
+    return todoRow = todos.map((value, key) => {
+      console.log(value);
+      return (
+        <Text>{value.description}</Text>
+      )
+    });
+  }
 
-    return (
-      <View style={{marginTop: 20}}>
-        <ActivityIndicator
-          color='#000'
-          animating={true}
-          size={50}
-        />
-      </View>
-    )
+  render() {
+
+    console.log(this.props);
+
+    if (this.state.todos) {
+      return (
+        <ListView
+          dataSource={this.state.todos}
+          renderRow={(rowData) => this.renderTodoList(rowData)}
+          enableEmptySections={true}
+          showsVerticalScrollIndicator={false}
+          horizontal={false} />
+      );
+    } else {
+      return (
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          {this.renderTodos()}
+          <Text style={{marginTop: 20, alignSelf: 'center', fontSize: 18}}>No hay elementos</Text>
+        </View>
+      );
+    }
   }
 }
 
@@ -158,3 +140,11 @@ const styles = StyleSheet.create({
     padding: 8,
   },
 });
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    todos: state.todos
+  }
+}
+
+export default connect(mapStateToProps)(TodoList);

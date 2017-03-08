@@ -8,10 +8,13 @@
   },
   "dependencies": {
     "firebase": "^3.6.9",
+    "install": "^0.8.7",
     "react": "~15.4.0",
     "react-native": "0.41.2",
     "react-native-smart-splash-screen": "^2.3.3",
-    "react-native-vector-icons": "^4.0.0"
+    "react-native-vector-icons": "^4.0.0",
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",

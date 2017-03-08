@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+
+import Reducers from './reducers';
+
 import {
   StyleSheet,
   Text,
@@ -32,13 +37,18 @@ export default class App extends Component {
   }
 
   render() {
+
+    const store = createStore(Reducers);
+
     return (
-      <View style={styles.container}>
-        <StatusBar hidden={false} backgroundColor="rgba(0,0,0, 0.2)" translucent={true} />
-        <Header title="Taskfire" version="v1.0.0" />
-        <Search />
-        <TodoList />
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <StatusBar hidden={false} backgroundColor="rgba(0,0,0, 0.2)" translucent={true} />
+          <Header title="Taskfire" version="v1.0.0" />
+          <Search />
+          <TodoList />
+        </View>
+      </Provider>
     )
   }
 

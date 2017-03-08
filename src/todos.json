@@ -1,0 +1,17 @@
+[
+  {
+    "id": 0,
+    "description": "pan",
+    "completed": false
+  },
+  {
+    "id": 1,
+    "description": "leche",
+    "completed": false
+  },
+  {
+    "id": 2,
+    "description": "miel",
+    "completed": false
+  }
+]

@@ -22,7 +22,7 @@ export default class Checkbox extends Component {
 
   renderIconCheck(checked) {
 
-    firebase.database().ref('todos').child(this.props.id).update({
+    firebase.database().ref('/todosDEV/').child(this.props.id).update({
       completed: this.props.checked,
       description: this.props.title
     });
@@ -43,7 +43,7 @@ export default class Checkbox extends Component {
           style={styles.trash}
           activeOpacity={1}
           onPress={() => {
-            firebase.database().ref('todos').child(this.props.id).remove();
+            firebase.database().ref('/todosDEV/').child(this.props.id).remove();
             ToastAndroid.show('Elemento eliminado', ToastAndroid.SHORT)
           }}>
           <Icon name='delete' color="#E91E63" size={25} />
