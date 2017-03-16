@@ -83,16 +83,6 @@ class TodoList extends Component {
     )
   }
 
-  renderTodos() {
-    const {todos} = this.props;
-    return todoRow = todos.map((value, key) => {
-      console.log(value);
-      return (
-        <Text>{value.description}</Text>
-      )
-    });
-  }
-
   render() {
 
     console.log(this.props);
@@ -109,7 +99,6 @@ class TodoList extends Component {
     } else {
       return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          {this.renderTodos()}
           <Text style={{marginTop: 20, alignSelf: 'center', fontSize: 18}}>No hay elementos</Text>
         </View>
       );
