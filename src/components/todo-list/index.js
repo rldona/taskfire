@@ -34,7 +34,7 @@ class TodoList extends Component {
   }
 
   componentDidMount() {
-    firebase.database().ref('/todosDEV/').on('child_added', (snapshot) => {
+    firebase.database().ref('/todos/').on('child_added', (snapshot) => {
       this.items.push(snapshot.val());
 
       if (snapshot.val() && typeof snapshot.val() !== 'undefined') {
@@ -50,7 +50,7 @@ class TodoList extends Component {
       }
     });
 
-    firebase.database().ref('/todosDEV/').on('child_changed', (snapshot) => {
+    firebase.database().ref('/todos/').on('child_changed', (snapshot) => {
       for (let i = 0; i < this.items.length; i++) {
         if (snapshot.val().id === this.items[i].id) {
           this.items[i]['completed'] = snapshot.val().completed;
@@ -62,10 +62,10 @@ class TodoList extends Component {
       });
     });
 
-    firebase.database().ref('/todosDEV/').on('child_removed', (snapshot) => {
+    firebase.database().ref('/todos/').on('child_removed', (snapshot) => {
       this.items = [];
       todoListService.removeAllTodos();
-      firebase.database().ref('/todosDEV/').set(null);
+      firebase.database().ref('/todos/').set(null);
 
       this.setState({
         todos: null,
@@ -84,9 +84,6 @@ class TodoList extends Component {
   }
 
   render() {
-
-    console.log(this.props);
-
     if (this.state.todos) {
       return (
         <ListView

@@ -33,7 +33,7 @@ export default class Header extends Component {
           text: 'Sí',
           onPress: () => {
             todoListService.setRemoveAll(true);
-            firebase.database().ref('/todosDEV/').remove();
+            firebase.database().ref('/todos/').remove();
           }
         }
       ],

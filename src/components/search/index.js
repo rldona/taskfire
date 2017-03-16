@@ -27,9 +27,9 @@ export default class Search extends Component {
   addTodo() {
     if (this.state.todo && typeof this.state.todo !== 'undefined' && this.state.todo !== '') {
       if (!todoListService.findTodo(this.state.todo)) {
-        var newPostKey = firebase.database().ref().child('/todosDEV/').push().key;
+        var newPostKey = firebase.database().ref().child('/todos/').push().key;
 
-        firebase.database().ref('/todosDEV/' + newPostKey).set({
+        firebase.database().ref('/todos/' + newPostKey).set({
           id: newPostKey,
           description: this.state.todo,
           completed: false
