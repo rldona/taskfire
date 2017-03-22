@@ -1,20 +1,16 @@
 import * as firebase from 'firebase';
 
-// Firebase
-
 export const init = () => {
   const config = {
-    apiKey: "AIzaSyBB8Cl3iMw-8w-QCbIUV0_uIqQeL6qKADU",
-    authDomain: "tasksfire-ionic2.firebaseapp.com",
-    databaseURL: "https://tasksfire-ionic2.firebaseio.com",
-    storageBucket: "tasksfire-ionic2.appspot.com",
-    messagingSenderId: "179114547975"
+    apiKey: "AIzaSyAdhAgMa6fxd-VM9B_K6VhwKEYEulvmg5o",
+    authDomain: "tasksfire-app.firebaseapp.com",
+    databaseURL: "https://tasksfire-app.firebaseio.com",
+    storageBucket: "tasksfire-app.appspot.com",
+    messagingSenderId: "1023950189906"
   };
 
   firebase.initializeApp(config);
 }
-
-// Taskfire
 
 export let todoList = [];
 
