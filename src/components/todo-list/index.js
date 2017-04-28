@@ -17,6 +17,8 @@ import * as todoListService from '../../todolist.service';
 
 import Todo from '../todo';
 
+import Loading from '../../components/loading';
+
 const { width, height } = Dimensions.get('window');
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -95,8 +97,8 @@ class TodoList extends Component {
       );
     } else {
       return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{marginTop: 20, alignSelf: 'center', fontSize: 18}}>No hay elementos</Text>
+        <View style={{marginTop: 20}}>
+          <Loading color="#000" size={40} center={true} />
         </View>
       );
     }
