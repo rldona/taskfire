@@ -43,9 +43,7 @@ export default class Search extends Component {
           'Elemento repetido',
           'El elemento que quieres añadir ya está en la lista',
           [
-            {
-              text: 'OK'
-            }
+            { text: 'OK' }
           ],
           {
             cancelable: true
